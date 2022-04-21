@@ -8,9 +8,9 @@ const GroupList = ({ items, valueProperty, contentProperty, onItemSelect, select
                 ? items.map((item) =>
                     <li className={"list-group-item" + (item === selectedItem ? " active" : "")}
                         onClick={() => onItemSelect(item)}
-                        key={item._id}
+                        key={item[valueProperty]}
                         role="button">
-                        {item.name}
+                        {item[contentProperty]}
                     </li>
                 )
                 : Object.keys(items).map(item =>

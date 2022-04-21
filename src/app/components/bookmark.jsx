@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Bookmark = (user) => {
+const Bookmark = (id) => {
     const mark = <i className="bi bi-bell"></i>;
     const fullMark = <i className="bi bi-bell-fill"></i>;
 
@@ -12,7 +12,7 @@ const Bookmark = (user) => {
             : setFavorite((prev) => (prev = false));
     };
     return (
-        <div onClick={clickMark} key={user._id}>
+        <div onClick={clickMark} key={id}>
             {favorite === false ? mark : fullMark}
         </div>
     );

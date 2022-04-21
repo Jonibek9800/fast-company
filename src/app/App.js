@@ -1,21 +1,11 @@
-import React, { useState, useEffect } from "react";
-import api from "./api/index";
+import React from "react";
+
 import Users from "./components/users";
 
 const App = () => {
-    const [users, setUsers] = useState();
-    useEffect(() => {
-        api.users.fetchAll().then(data => setUsers(data));
-    }, []);
-    console.log(users);
-    const handleDelete = (userId) => {
-        setUsers((prevState) =>
-            prevState.filter((user) => user._id !== userId)
-        );
-    };
     return (
         <>
-            {users && <Users onDelete={handleDelete} users={users} />}
+            <Users />
         </>
     );
 };
