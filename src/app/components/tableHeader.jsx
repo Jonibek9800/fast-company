@@ -32,7 +32,6 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                         {columns[column].name}
                         {columns[column].path && handlePoint(columns[column].path)}
                     </th>
-
                 ))}
             </tr>
         </thead>

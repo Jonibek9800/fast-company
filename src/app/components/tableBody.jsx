@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+// import { Link } from "react-router-dom";
 
 const TableBody = ({ columns, data }) => {
     const renderContent = (item, column) => {
