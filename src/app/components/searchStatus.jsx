@@ -1,15 +1,19 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const renderPhrase = (number) => {
-    return number !== 0
+const SearchStatus = ({ count }) => {
+    return count !== 0
         ? (
             <span className="badge bg-primary">
-                {number} тусанет с тобой сегодня
+                {count} тусанет с тобой сегодня
             </span>
         )
         : (
             <span className="badge bg-danger">Никто с тобой не тусанет</span>
         );
 };
+SearchStatus.propTypes = {
+    count: PropTypes.number
+};
 
-export default renderPhrase;
+export default SearchStatus;
