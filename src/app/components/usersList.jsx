@@ -7,6 +7,7 @@ import GroupList from "./groupList";
 import UserTable from "./usersTable";
 import _ from "lodash";
 import Spiner from "./Spiner";
+import SearchEngine from "./searchEngine";
 
 function Users() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -78,9 +79,7 @@ function Users() {
                     </div>}
                 <div className="d-flex flex-column">
                     <h4>{<SearchStatus count={count} />}</h4>
-                    <div className="m-2 w-100">
-                        <input type="text" className="w-100 p-1" value={value} onChange={handleChange} />
-                    </div>
+                    <SearchEngine value={value} onChange={handleChange} />
                     {count > 0
                         ? (
                             <UserTable
