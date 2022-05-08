@@ -52,7 +52,7 @@ function Users() {
     const search = handleSearch();
     if (users) {
         const filteredUsers = selectedProf
-            ? selectedProf && search.filter(user => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
+            ? search.filter(user => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
             : search;
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
@@ -78,9 +78,8 @@ function Users() {
                     </div>}
                 <div className="d-flex flex-column">
                     <h4>{<SearchStatus count={count} />}</h4>
-                    {/* ========================================================= */}
                     <div className="m-2 w-100">
-                        <input type="text" className="w-100 p-1" value={value} onChange={handleChange} />
+                        <input type="text" className="w-100 p-1" onChange={handleChange} />
                     </div>
                     {count > 0
                         ? (
