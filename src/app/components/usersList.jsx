@@ -79,7 +79,7 @@ function Users() {
                 <div className="d-flex flex-column">
                     <h4>{<SearchStatus count={count} />}</h4>
                     <div className="m-2 w-100">
-                        <input type="text" className="w-100 p-1" onChange={handleChange} />
+                        <input type="text" className="w-100 p-1" value={value} onChange={handleChange} />
                     </div>
                     {count > 0
                         ? (
