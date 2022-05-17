@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Pagination from "./pagination";
-import { paginate } from "../utils/paginate";
-import SearchStatus from "./searchStatus";
-import api from "../api/index";
-import GroupList from "./groupList";
-import UserTable from "./usersTable";
+import Pagination from "../../common/pagination";
+import { paginate } from "../../../utils/paginate";
+import SearchStatus from "../../ui/searchStatus";
+import api from "../../../api/index";
+import GroupList from "../../common/groupList";
+import UserTable from "../../ui/usersTable";
 import _ from "lodash";
-import Spiner from "./Spiner";
-import SearchEngine from "./searchEngine";
+import Spiner from "../../common/Spiner";
+import SearchEngine from "../../ui/searchEngine";
 
-function Users() {
+function UsersListPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
@@ -105,4 +105,4 @@ function Users() {
     return <Spiner />;
 }
 
-export default Users;
+export default UsersListPage;
