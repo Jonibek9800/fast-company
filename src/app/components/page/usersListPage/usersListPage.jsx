@@ -16,7 +16,7 @@ function UsersListPage() {
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 6;
     const [users, setUsers] = useState();
-    const [value, setValue] = useState("");
+    const [inputItem, setInputItem] = useState("");
     useEffect(() => {
         api.users.fetchAll().then(data => setUsers(data));
     }, []);
@@ -31,7 +31,7 @@ function UsersListPage() {
         setCurrentPage(1);
     }, [selectedProf]);
     const handleProfessionSelect = (item) => {
-        setValue("");
+        setInputItem("");
         setSelectedProf(item);
     };
     const handlePageChange = (pageIndex) => {
@@ -41,9 +41,9 @@ function UsersListPage() {
         setSortBy(item);
     };
     const handleSearch = () => {
-        if (value) {
+        if (inputItem) {
             const filterUser = users && users.filter((user) => {
-                return user.name.toLowerCase().includes(value.toLowerCase());
+                return user.name.toLowerCase().includes(inputItem.toLowerCase());
             });
             return filterUser;
         } else {
@@ -59,13 +59,13 @@ function UsersListPage() {
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
         const clearFilter = () => {
-            setValue("");
+            setInputItem("");
             setSelectedProf();
         };
         const handleChange = ({ target }) => {
-            const { value } = target;
+            const { inputItem } = target;
             clearFilter();
-            setValue(value);
+            setInputItem(inputItem);
         };
         return (
             <div className="d-flex">
@@ -79,7 +79,7 @@ function UsersListPage() {
                     </div>}
                 <div className="d-flex flex-column">
                     <h4>{<SearchStatus count={count} />}</h4>
-                    <SearchEngine value={value} onChange={handleChange} />
+                    <SearchEngine inputItem={inputItem} onChange={handleChange} />
                     {count > 0
                         ? (
                             <UserTable
