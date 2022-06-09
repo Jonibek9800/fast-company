@@ -4,12 +4,13 @@ import Bookmark from "../common/bookmark";
 import Qualities from "./qualities";
 import Table from "../common/table";
 import LinkUsername from "../page/linkUsername";
+import Profession from "./profession";
 
 const UserTable = ({ users, onDelete, selectedSort, onSort }) => {
     const columns = {
         name: { path: "name", name: "Имя", component: (user) => (<LinkUsername id={user._id} name={user.name} />) },
-        qualities: { name: "Качества", component: (user) => (<Qualities qualities={user.qualities} />) },
-        professions: { path: "profession.name", name: "Профессия" },
+        qualities: { name: "Качества", component: (user) => (<Qualities id={user.qualities} />) },
+        professions: { name: "Профессия", component: (user) => (<Profession id={user.profession} />) },
         completedMeetings: { path: "completedMeetings", name: "Встретился, раз" },
         rate: { path: "rate", name: "Оценка" },
         bookmark: { path: "bookmark", name: "Избранное", component: <Bookmark /> },

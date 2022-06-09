@@ -8,21 +8,19 @@ import UserTable from "../../ui/usersTable";
 import _ from "lodash";
 import Spiner from "../../common/Spiner";
 import SearchEngine from "../../ui/searchEngine";
+import { useUsers } from "../../../hooks/useUsers";
 
 function UsersListPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-    const pageSize = 6;
-    const [users, setUsers] = useState();
     const [inputItem, setInputItem] = useState("");
-    useEffect(() => {
-        api.users.fetchAll().then(data => setUsers(data));
-    }, []);
+    const pageSize = 6;
+    const { users } = useUsers();
     const handleDelete = (userId) => {
-        setUsers((prevState) => prevState.filter((user) => user._id !== userId)
-        );
+        // setUsers((prevState) => prevState.filter((user) => user._id !== userId));
+        console.log(userId);
     };
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfession(data));
