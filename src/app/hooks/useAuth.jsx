@@ -15,9 +15,8 @@ const AuthProvider = ({ children }) => {
     const [currentUser, setUser] = useState({});
     const [error, setError] = useState(null);
     async function signUp({ email, password, ...rest }) {
-        const key = "AIzaSyAEedQLzFZvbd6jKBobe-1VNF7l14En1EI";
-        // const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`; Не рабтает почемуто у меня env
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`;
+        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`; // Не рабтает почемуто у меня env
+        // const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`;
         try {
             const { data } = await httpAuth.post(url, { email, password, returnSecureToken: true });
             setTokens(data);
