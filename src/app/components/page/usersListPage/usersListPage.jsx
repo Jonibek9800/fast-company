@@ -19,7 +19,7 @@ function UsersListPage() {
     const pageSize = 6;
     const { users } = useUsers();
     const handleDelete = (userId) => {
-        // setUsers((prevState) => prevState.filter((user) => user._id !== userId));
+        // users.filter((user) => user._id !== userId);
         console.log(userId);
     };
     useEffect(() => {

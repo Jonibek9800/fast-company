@@ -19,7 +19,7 @@ export const ProfessionProvider = ({ children }) => {
     }, [error]);
     useEffect(() => { getProfessionsList(); }, []);
     function errorCatcher(error) {
-        const { message } = error.responce.data;
+        const { message } = error.response.data;
         // setError(message);
         console.log(message);
     };

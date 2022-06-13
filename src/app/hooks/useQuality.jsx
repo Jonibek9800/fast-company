@@ -32,7 +32,7 @@ export const QualityProvider = ({ children }) => {
         return qualities.find(quality => quality._id === id);
     }
     function errorCatcher(error) {
-        const { message } = error.responce.data;
+        const { message } = error.response.data;
         // setError(message);
         console.log(message);
     };
