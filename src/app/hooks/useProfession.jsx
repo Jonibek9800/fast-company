@@ -14,18 +14,20 @@ export const ProfessionProvider = ({ children }) => {
     const [professions, setProfession] = useState([]);
     const [error, setError] = useState(null);
     useEffect(() => {
-        toast(error);
-        setError(null);
+        if (error !== null) {
+            toast(error);
+            setError(null);
+        }
     }, [error]);
     useEffect(() => { getProfessionsList(); }, []);
     function errorCatcher(error) {
         const { message } = error.response.data;
-        // setError(message);
-        console.log(message);
+        setError(message);
     };
     async function getProfessionsList() {
         try {
             const { content } = await professionService.get();
+            console.log(content);
             setProfession(content);
             setLoading(false);
         } catch (error) {

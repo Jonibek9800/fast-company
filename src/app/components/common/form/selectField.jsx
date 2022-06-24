@@ -8,10 +8,13 @@ const SelectField = ({ label, value, onChange, name, defaultOption, options, err
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
+    const optionsUpdate = (options) => {
+        return options.map(op => ({ label: op.name, value: op._id }));
+    };
     const optionsArray =
-        !Array.isArray(options) && typeof options === "object"
-            ? Object.values(options)
-            : options;
+        !Array.isArray(optionsUpdate(options)) && typeof optionsUpdate(options) === "object"
+            ? Object.values(optionsUpdate(options))
+            : optionsUpdate(options);
     return (
         <div className="md-4">
             <label
@@ -30,8 +33,8 @@ const SelectField = ({ label, value, onChange, name, defaultOption, options, err
                 </option>
                 {optionsArray &&
                     optionsArray.map((option) => (
-                        <option value={option._id} key={option._id}>
-                            {option.name}
+                        <option value={option.value} key={option.value}>
+                            {option.label}
                         </option>
                     ))}
             </select>

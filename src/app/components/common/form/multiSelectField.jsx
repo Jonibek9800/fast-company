@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
     const qualityArray = () => {
         return options.map((data) => {
-            return { value: data._id, label: data.name };
+            return { label: data.name, value: data._id };
         });
     };
     const itemsArray = qualityArray();

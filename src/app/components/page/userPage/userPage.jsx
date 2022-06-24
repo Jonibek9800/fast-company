@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import api from "../../../api/index";
 import Spiner from "../../common/Spiner";
 import UserCard from "../../ui/userCard";
 import QualitiesCard from "../../ui/qualitiesCard";
 import MeetingsCard from "../../ui/meetingsCard";
 import Comments from "../../ui/comments";
+import { useUsers } from "../../../hooks/useUsers";
+import { ComentsProvider } from "../../../hooks/useComents";
 
 const UserPage = ({ id }) => {
-    const [user, setUser] = useState();
-    useEffect(() => {
-        api.users.getById(id).then(data => setUser(data));
-    }, []);
+    const { getUserById } = useUsers();
+    const user = getUserById(id);
     if (user) {
         return (
             <div className="container">
@@ -22,7 +21,9 @@ const UserPage = ({ id }) => {
                         <MeetingsCard count={user.completedMeetings} />
                     </div>
                     <div className="col-md-8">
-                        {<Comments />}
+                        <ComentsProvider>
+                            <Comments />
+                        </ComentsProvider>
                     </div>
                 </div>
 

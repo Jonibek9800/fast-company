@@ -14,8 +14,10 @@ export const QualityProvider = ({ children }) => {
     const [qualities, setQualities] = useState([]);
     const [error, setError] = useState(null);
     useEffect(() => {
-        toast(error);
-        setError(null);
+        if (error !== null) {
+            toast(error);
+            setError(null);
+        }
     }, [error]);
     // console.log(qualities);
     useEffect(() => { getQualytyList(); }, []);

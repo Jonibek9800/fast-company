@@ -13,10 +13,11 @@ const UserProvider = ({ children }) => {
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
-        toast(error);
-        setError(null);
+        if (error !== null) {
+            toast(error);
+            setError(null);
+        }
     }, [error]);
-    console.log(users);
     async function getUsers() {
         try {
             const { content } = await userService.get();
@@ -33,8 +34,11 @@ const UserProvider = ({ children }) => {
         const { message } = error.response.data;
         setError(message);
     }
+    function getUserById(userId) {
+        return users.find((user) => user._id === userId);
+    }
     return (
-        <UserContext.Provider value={{ users }}>
+        <UserContext.Provider value={{ users, getUserById }}>
             {!isLoading ? children : "Loading Users ..."}
         </UserContext.Provider>
     );

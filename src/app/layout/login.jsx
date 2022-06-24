@@ -21,7 +21,7 @@ const Login = () => {
                             </>
                             : <><h3 className="mb-4">Login</h3>
                                 <LoginForm />
-                                <p>Dont have account? <a role="button" onClick={toggleFormType}>Sign un</a></p>
+                                <p>Dont have account? <a role="button" onClick={toggleFormType}>Sign up</a></p>
                             </>}
                     </div>
                 </div>

@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
-import api from "../../../api";
 import TextField from "../../common/form/textField";
 import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import { validator } from "../../../utils/validator";
 import { useParams, useHistory } from "react-router-dom";
+import { useProfession } from "../../../hooks/useProfession";
+import { useQuality } from "../../../hooks/useQuality";
+import { useAuth } from "../../../hooks/useAuth";
+import Spiner from "../../common/Spiner";
+import { toast } from "react-toastify";
 
 const Edit = () => {
     const { userId } = useParams();
     const history = useHistory();
-    const [isLoading, setIsLoading] = useState(false);
+    const { currentUser, updateUser } = useAuth();
+    const { profession, qualities: quality } = currentUser;
+    const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState({
         name: "",
         email: "",
@@ -18,26 +24,22 @@ const Edit = () => {
         sex: "male",
         qualities: []
     });
-    const [professions, setProfession] = useState([]);
-    const [qualities, setQualities] = useState([]);
+    const { professions } = useProfession();
+    const { qualities } = useQuality();
     const [errors, setErrors] = useState({});
     const getProfessionById = (id) => {
         for (const prof of professions) {
-            if (prof.value === id) {
-                return { _id: prof.value, name: prof.label };
-            }
+            if (prof._id === id) {
+                return prof._id;
+            };
         }
     };
     const getQualities = (elements) => {
         const qualitiesArray = [];
         for (const elem of elements) {
             for (const quality in qualities) {
-                if (elem.value === qualities[quality].value) {
-                    qualitiesArray.push({
-                        _id: qualities[quality].value,
-                        name: qualities[quality].label,
-                        color: qualities[quality].color
-                    });
+                if (elem.value === qualities[quality]._id) {
+                    qualitiesArray.push(qualities[quality]._id);
                 }
             }
         }
@@ -48,48 +50,38 @@ const Edit = () => {
         const isValid = validate();
         if (!isValid) return;
         const { profession, qualities } = data;
-        api.users
-            .update(userId, {
-                ...data,
-                profession: getProfessionById(profession),
-                qualities: getQualities(qualities)
-            })
-            .then((data) => history.push(`/users/${data._id}`));
-        console.log({
+        console.log(qualities);
+        updateUser(userId, {
             ...data,
             profession: getProfessionById(profession),
             qualities: getQualities(qualities)
         });
+        history.push(`/users/${data._id}`);
     };
+    console.log(data);
+    function errorCatcher(error) {
+        toast(error);
+    }
     const transformData = (data) => {
-        return data.map((qual) => ({ label: qual.name, value: qual._id }));
+        try {
+            const qualit = [];
+            for (const qual of quality) {
+                const q = data.find((q) => q._id === qual);
+                qualit.push(q);
+            };
+            return qualit.map((qual) => ({ label: qual.name, value: qual._id }));
+        } catch (error) {
+            errorCatcher(error);
+        }
     };
     useEffect(() => {
-        setIsLoading(true);
-        api.users.getById(userId).then(({ profession, qualities, ...data }) =>
-            setData((prevState) => ({
-                ...prevState,
-                ...data,
-                qualities: transformData(qualities),
-                profession: profession._id
-            }))
-        );
-        api.professions.fetchAll().then((data) => {
-            const professionsList = Object.keys(data).map((professionName) => ({
-                label: data[professionName].name,
-                value: data[professionName]._id
-            }));
-            setProfession(professionsList);
-        });
-        api.qualities.fetchAll().then((data) => {
-            const qualitiesList = Object.keys(data).map((optionName) => ({
-                value: data[optionName]._id,
-                label: data[optionName].name,
-                color: data[optionName].color
-            }));
-            setQualities(qualitiesList);
-        });
-    }, []);
+        setData((prev) => ({
+            ...prev,
+            ...currentUser,
+            qualities: transformData(qualities),
+            profession: profession
+        }));
+    }, [isLoading]);
     useEffect(() => {
         if (data._id) setIsLoading(false);
     }, [data]);
@@ -128,13 +120,14 @@ const Edit = () => {
     };
     const isValid = Object.keys(errors).length === 0;
     return (
+        !isLoading &&
         <div className="container mt-5">
             <div className="row">
                 <div className="col-md-4 mb-3">
                     <button className="btn btn-primary" onClick={handleBack}>Назад</button>
                 </div>
                 <div className="col-md-6 offset-md-3 shadow p-4">
-                    {!isLoading && Object.keys(professions).length > 0 ? (
+                    {!isLoading && Object.keys(professions).length > 0 && qualities.length > 0 ? (
                         <form onSubmit={handleSubmit}>
                             <TextField
                                 label="Имя"
@@ -186,20 +179,12 @@ const Edit = () => {
                             </button>
                         </form>
                     ) : (
-                        "Loading..."
+                        <Spiner />
                     )}
                 </div>
             </div>
         </div >
     );
 };
-// Edit.propTypes = {
-//     user: PropTypes.object,
-//     data: PropTypes.object,
-//     qualities: PropTypes.array,
-//     professions: PropTypes.array,
-//     onChange: PropTypes.func,
-//     onSubmit: PropTypes.func
-// };
 
 export default Edit;

@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Qualities = ({ quality }) => {
-    console.log(quality);
     return (
         quality.map(qual => {
             return (

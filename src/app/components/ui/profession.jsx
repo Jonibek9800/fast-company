@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useProfession } from "../../hooks/useProfession";
+import Spiner from "../common/Spiner";
 
 const Profession = ({ id }) => {
     const { isLoading, getProfessions } = useProfession();
@@ -8,7 +9,7 @@ const Profession = ({ id }) => {
     if (!isLoading) {
         return <p>{prof.name}</p>;
     } else {
-        return "ladding...";
+        return <Spiner />;
     }
 };
 Profession.propTypes = {

@@ -21,7 +21,8 @@ module.exports = {
         }],
         "multiline-ternary": ["off"],
         quotes: ["error", "double", {
-            allowTemplateLiterals: true
+            allowTemplateLiterals: true,
+            avoidEscape: true
         }]
     }
 };
