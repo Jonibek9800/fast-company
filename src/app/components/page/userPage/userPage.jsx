@@ -5,12 +5,11 @@ import UserCard from "../../ui/userCard";
 import QualitiesCard from "../../ui/qualitiesCard";
 import MeetingsCard from "../../ui/meetingsCard";
 import Comments from "../../ui/comments";
-import { useUsers } from "../../../hooks/useUsers";
-import { ComentsProvider } from "../../../hooks/useComents";
+import { getUserById } from "../../../store/users";
+import { useSelector } from "react-redux";
 
 const UserPage = ({ id }) => {
-    const { getUserById } = useUsers();
-    const user = getUserById(id);
+    const user = useSelector(getUserById(id));
     if (user) {
         return (
             <div className="container">
@@ -21,9 +20,7 @@ const UserPage = ({ id }) => {
                         <MeetingsCard count={user.completedMeetings} />
                     </div>
                     <div className="col-md-8">
-                        <ComentsProvider>
                             <Comments />
-                        </ComentsProvider>
                     </div>
                 </div>
 

@@ -3,17 +3,13 @@ import PropTypes from "prop-types";
 
 const Qualities = ({ quality }) => {
     return (
-        quality.map(qual => {
-            return (
-                <span className={`badge bg-${qual.color} m-1`} key={qual._id}>
-                    {qual.name}
-                </span >
-            );
-        })
+        <span className={`badge bg-${quality.color} m-1`} key={quality._id}>
+            {quality.name}
+        </span >
     );
 };
 Qualities.propTypes = {
-    quality: PropTypes.array
+    quality: PropTypes.object
 };
 
 export default Qualities;

@@ -3,7 +3,7 @@ import {
     toast
 } from "react-toastify";
 import configFile from "../config.json";
-import { httpAuth } from "../hooks/useAuth";
+import authService from "./auth.service";
 import localStorageServise from "./localStoreg.service";
 
 const http = axios.create({
@@ -19,10 +19,7 @@ http.interceptors.request.use(
             const expiresDate = localStorageServise.getExpairesDate();
             const refreshToken = localStorageServise.getRefreshToken();
             if (refreshToken && expiresDate < Date.now()) {
-                const { data } = await httpAuth.post("token", {
-                    grant_type: "refresh_token",
-                    refresh_token: refreshToken
-                });
+                const data = await authService.refreshToken();
                     localStorageServise.setTokens({
                         refreshToken: data.refresh_token,
                         idToken: data.id_token,
@@ -63,7 +60,6 @@ http.interceptors.response.use(
             error.response.status >= 400 &&
             error.response.status < 500;
         if (!expectedErrors) {
-            console.log(error);
             toast.error("Somthing was wrong. Try it leter");
             // toast("Unexpected errors")
         }
@@ -74,6 +70,7 @@ const httpService = {
     get: http.get,
     post: http.post,
     put: http.put,
-    delete: http.delete
+    delete: http.delete,
+    patch: http.patch
 };
 export default httpService;

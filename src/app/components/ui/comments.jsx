@@ -1,22 +1,25 @@
 import { orderBy } from "lodash";
-import React from "react";
-import { useComents } from "../../hooks/useComents";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { createComment, getComments, getCommentsLoadingStatus, loadcommentsList, removeComment } from "../../store/comments";
 import AddCommentLists from "../common/comments/addCommentForms";
 import CommentList from "../common/comments/commentsList";
+import Spiner from "../common/Spiner";
 
 const Comments = () => {
-    const { comments, createComment, removeComment } = useComents();
+    const { userId } = useParams();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(loadcommentsList(userId));
+    }, [userId]);
+    const isLoading = useSelector(getCommentsLoadingStatus());
+    const comments = useSelector(getComments());
     const handleSubmit = (data) => {
-        createComment(data);
-        // api.comments.add({ ...data, pageId: userId })
-        //     .then((data) => setComments([...comments, data]));
+        dispatch(createComment(data, userId));
     };
     const handleRemoveComments = (id) => {
-        removeComment(id);
-        // api.comments.remove(id).then((id) => {
-        //     setComments(comments.filter((x) => x._id !== id));
-        // });
-        console.log(id);
+        dispatch(removeComment(id));
     };
     const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
     return (<>
@@ -30,7 +33,7 @@ const Comments = () => {
             <div className="card-body ">
                 <h2>Comments</h2>
                 <hr />
-                {<CommentList comments={sortedComments} onRemove={handleRemoveComments} />}
+                {!isLoading ? <CommentList comments={sortedComments} onRemove={handleRemoveComments} /> : <Spiner />}
             </div>
         </div>}
     </>);

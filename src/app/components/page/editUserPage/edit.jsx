@@ -4,28 +4,25 @@ import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import { validator } from "../../../utils/validator";
-import { useParams, useHistory } from "react-router-dom";
-import { useProfession } from "../../../hooks/useProfession";
-import { useQuality } from "../../../hooks/useQuality";
-import { useAuth } from "../../../hooks/useAuth";
+import { useHistory } from "react-router-dom";
 import Spiner from "../../common/Spiner";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { getQualitiesLoadingStatus, getQualities } from "../../../store/qualities";
+import { getProfessions, getProfessionsLoadingStatus } from "../../../store/professions";
+import { getCurrentUserData, updateUserData } from "../../../store/users";
 
 const Edit = () => {
-    const { userId } = useParams();
     const history = useHistory();
-    const { currentUser, updateUser } = useAuth();
-    const { profession, qualities: quality } = currentUser;
+    const dispatch = useDispatch();
+    const currentUser = useSelector(getCurrentUserData());
+    const { qualities: quality } = currentUser;
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState({
-        name: "",
-        email: "",
-        profession: "",
-        sex: "male",
-        qualities: []
-    });
-    const { professions } = useProfession();
-    const { qualities } = useQuality();
+    const [data, setData] = useState();
+    const professions = useSelector(getProfessions());
+    const professionLoading = useSelector(getProfessionsLoadingStatus());
+    const qualities = useSelector(getQualities());
+    const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
     const [errors, setErrors] = useState({});
     const getProfessionById = (id) => {
         for (const prof of professions) {
@@ -34,7 +31,7 @@ const Edit = () => {
             };
         }
     };
-    const getQualities = (elements) => {
+    const getQualitiesList = (elements) => {
         const qualitiesArray = [];
         for (const elem of elements) {
             for (const quality in qualities) {
@@ -50,15 +47,13 @@ const Edit = () => {
         const isValid = validate();
         if (!isValid) return;
         const { profession, qualities } = data;
-        console.log(qualities);
-        updateUser(userId, {
+        dispatch(updateUserData({
             ...data,
             profession: getProfessionById(profession),
-            qualities: getQualities(qualities)
-        });
+            qualities: getQualitiesList(qualities)
+        }));
         history.push(`/users/${data._id}`);
     };
-    console.log(data);
     function errorCatcher(error) {
         toast(error);
     }
@@ -75,15 +70,17 @@ const Edit = () => {
         }
     };
     useEffect(() => {
-        setData((prev) => ({
-            ...prev,
+        if (!professionLoading && !qualitiesLoading && currentUser && !data) {
+        setData(() => ({
             ...currentUser,
-            qualities: transformData(qualities),
-            profession: profession
+            qualities: transformData(qualities)
         }));
-    }, [isLoading]);
+        }
+    }, [professionLoading, qualitiesLoading, currentUser, data]);
     useEffect(() => {
-        if (data._id) setIsLoading(false);
+        if (data && isLoading) {
+            setIsLoading(false);
+        }
     }, [data]);
 
     const validatorConfig = {

@@ -5,20 +5,15 @@ import Users from "./layout/users";
 import Main from "./layout/main";
 import Login from "./layout/login";
 import { ToastContainer } from "react-toastify";
-import { ProfessionProvider } from "./hooks/useProfession";
-import { QualityProvider } from "./hooks/useQuality";
-import AuthProvider from "./hooks/useAuth";
 import ProtectedRoute from "./components/common/protectedRoute";
 import LogOut from "./layout/logOut";
+import AppLoader from "./components/ui/hoc/appLoader";
 
 const App = () => {
     return (
         <>
-            <AuthProvider>
+        <AppLoader>
                 <NavBar />
-
-                <QualityProvider>
-                    <ProfessionProvider>
                         <Switch>
                                 <Route path="/" exact component={Main}/>
                                 <Route path="/login/:type?" component={Login}/>
@@ -26,10 +21,7 @@ const App = () => {
                                 <ProtectedRoute path="/users/:userId?/:edit?" component={Users}/>
                                 <Redirect to="/"/>
                         </Switch>
-                    </ProfessionProvider>
-                </QualityProvider>
-            </AuthProvider>
-
+        </AppLoader>
             <ToastContainer />
         </>
     );
