@@ -1,29 +1,26 @@
-const tokenService = require("../services/token.service");
+const tokenService = require("../services/token.services");
 
 module.exports = (req, res, next) => {
-    if (req.method === "OPTIONS") {
-        return next()
+  if (req.method === "OPTIONS") {
+    return next();
+  }
+
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    if (!token) {
+      return res.status(200).json({ message: "Unauthorized" });
     }
 
-    try {
-        const token = req.headers.authorization.split(" ")[1];
-        if (!token) {
-            return  res.status(200).json({message: "Unauthorized"});
-        };
+    const data = tokenService.validateAccess(token);
 
-        const data = tokenService.validateAccess(token);
-
-        if (!data) {
-            return res.status(401).json({message: 'Unauthorized'})
-        }
-
-        console.log("decoder", data)
-
-        req.user = data;
-
-        next()
-
-    } catch (error) {
-        res.status(200).json({message: "Unauthorized"})
+    if (!data) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
-}
+
+    req.user = data;
+
+    next();
+  } catch (error) {
+    res.status(200).json({ message: "Unauthorized" });
+  }
+};

@@ -1,26 +1,22 @@
 {
-  "name": "jfd-server",
+  "name": "fast_company_server",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production nodemon app.js",
+    "start": "cross-env NODE_ENV=production node app.js",
     "serve": "cross-env NODE_ENV=development nodemon app.js"
   },
   "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "chalk": "^4.1.2",
-    "config": "^3.3.7",
-    "cors": "^2.8.5",
-    "express": "^4.17.2",
-    "express-validator": "^6.14.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.1.6"
+    "config": "^3.3.12",
+    "express": "^4.21.0",
+    "mongoose": "^8.6.3"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "nodemon": "^2.0.20"
+    "nodemon": "^3.1.5"
   }
 }

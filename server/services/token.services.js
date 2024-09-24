@@ -50,4 +50,4 @@ class TokenServece {
     }
 }
 
-module.exports = new TokenServece
+module.exports = new TokenServece()

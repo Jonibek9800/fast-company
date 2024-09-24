@@ -6,10 +6,14 @@ const schema = new Schema(
       type: String,
       require: true,
     },
+    color: {
+      type: String,
+      require: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = model("Profession", schema);
+module.exports = model("Qualities", schema);
